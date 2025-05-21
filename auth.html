@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Flowdiary Challenge Day 1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        :root {
+    --primary: #106dd6;
+    --primary-dark: #3a7bc8;
+    --error: #ff4757;
+    --text: #2f3542;
+    --light: #f1f2f6;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: var(--text);
+    overflow: hidden;
+}
+
+.background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(74, 144, 226, 0.1) 0%, rgba(74, 144, 226, 0) 50%);
+    z-index: -1;
+    animation: float 15s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(-5%, 5%);
+    }
+    50% {
+        transform: translate(5%, -5%);
+    }
+    75% {
+        transform: translate(-5%, -5%);
+    }
+}
+
+.login-container {
+    background-color: var(--white);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.logo {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.logo svg {
+    width: 60px;
+    height: 60px;
+    filter: drop-shadow(0 4px 6px rgba(74, 144, 226, 0.3));
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+h2 {
+    text-align: center;
+    color: var(--text);
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.error-summary {
+    background-color: var(--error);
+    color: var(--white);
+    padding: 0.8rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    display: none;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem 0;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    font-size: 1rem;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-bottom-color: var(--primary);
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    transform: translateY(-24px) scale(0.9);
+    color: var(--primary);
+}
+
+.form-group label {
+    position: absolute;
+    left: 0;
+    top: 0.8rem;
+    color: #777;
+    font-size: 1rem;
+    font-weight: 500;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary);
+    transition: width 0.4s ease;
+}
+
+.form-group input:focus ~ .underline {
+    width: 100%;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.login-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+}
+
+.login-btn svg {
+    stroke: var(--white);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover svg {
+    transform: translateX(5px);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+/* Error states */
+.form-group.error input {
+    border-bottom-color: var(--error);
+}
+
+.form-group.error label {
+    color: var(--error);
+}
+
+.form-group.error .underline {
+    background-color: var(--error);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <div class="login-container animate__animated animate__fadeIn">
+        <div class="logo animate__animated animate__bounceIn">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="#4a90e2"/>
+            </svg>
+        </div>
+        
+        <h1 class="animate__animated animate__fadeInDown">Flowdiary Challenge </h1>
+        <h2 class="animate__animated animate__fadeInDown animate__delay-1s"> Login</h2>
+        
+        <form id="loginForm" class="animate__animated animate__fadeIn animate__delay-1s">
+            <div class="error-summary" id="formErrors"></div>
+            
+            <div class="form-group">
+                <input type="text" id="email" name="email" placeholder=" " autocomplete="off">
+                <label for="email">Email</label>
+                <div class="underline"></div>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder=" " autocomplete="off">
+                <label for="password">Password</label>
+                <div class="underline"></div>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <span>Login</span>
+                <svg viewBox="0 0 13 10" height="10px" width="15px">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                </svg>
+            </button>
+        </form>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
